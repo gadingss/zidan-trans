@@ -1,5 +1,7 @@
 # Copy semua file proyek ke dalam image
 COPY . /app/.
+COPY .env /app/.env
+
 
 # Pastikan direktori kerja
 WORKDIR /app
