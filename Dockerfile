@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Install ekstensi PHP yang diperlukan
-# Update package dan install dependensi
+# Install dependensi sistem dan ekstensi PHP
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     libzip-dev \
@@ -17,13 +17,17 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install \
         pdo \
         pdo_mysql \
-        zip \
-        intl
+        intl \
+        zip
 
+
+# Salin file .env.example menjadi .env jika file .env tidak ada
+RUN cp /app/.env.example /app/.env || echo "No .env.example found; skipped copying .env"
 
 # Install Composer dependencies
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+
 
 # Set permission untuk folder storage
 RUN chmod -R 775 storage bootstrap/cache
@@ -31,8 +35,6 @@ RUN chmod -R 775 storage bootstrap/cache
 # Expose port untuk Laravel
 EXPOSE 8000
 
-# Salin file .env.example menjadi .env jika .env tidak ada
-RUN cp /app/.env.example /app/.env || echo "No .env.example found; skipped copying .env"
 
 
 # Jalankan server Laravel bawaan
