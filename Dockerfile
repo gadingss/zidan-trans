@@ -8,12 +8,18 @@ WORKDIR /app
 COPY . /app
 
 # Install ekstensi PHP yang diperlukan
+# Update package dan install dependensi
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     libzip-dev \
     libicu-dev \
     unzip \
-    && docker-php-ext-install pdo pdo_mysql zip intl
+    && docker-php-ext-install \
+        pdo \
+        pdo_mysql \
+        zip \
+        intl
+
 
 # Install Composer dependencies
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
