@@ -31,5 +31,9 @@ RUN chmod -R 775 storage bootstrap/cache
 # Expose port untuk Laravel
 EXPOSE 8000
 
+# Salin file .env.example menjadi .env jika .env tidak ada
+RUN cp /app/.env.example /app/.env || echo "No .env.example found; skipped copying .env"
+
+
 # Jalankan server Laravel bawaan
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
