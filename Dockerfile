@@ -1,5 +1,5 @@
 # Tahap build aplikasi Laravel
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 # Set working directory
 WORKDIR /app
