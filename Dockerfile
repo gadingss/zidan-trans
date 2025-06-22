@@ -17,9 +17,11 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && docker-php-ext-install pdo pdo_mysql zip
 
-# Install dependency menggunakan Composer
+# Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+
+# Jalankan Composer install untuk dependency Laravel
+RUN composer install --no-dev --optimize-autoloader
 
 # Buat cache konfigurasi Laravel
 RUN php artisan config:cache
