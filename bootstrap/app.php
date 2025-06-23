@@ -21,21 +21,23 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Illuminate\Session\Middleware\AuthenticateSession::class,
-
         ]);
 
-            // Daftarkan alias middleware custom 'auth.admin'
+        // Daftarkan alias middleware custom 'auth.admin'
         $middleware->alias([
             'auth.admin' => \App\Http\Middleware\AuthenticateAdmin::class,
         ]);
 
         // Daftarkan middleware group 'api'
         $middleware->group('api', [
-            
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })
+    ->withCommands([
+        \App\Console\Commands\ServeCommand::class, // Tambahkan command custom Anda di sini
+    ])
     ->create();
+
