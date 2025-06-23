@@ -12,7 +12,12 @@ return new class extends Migration
     public function up()
     {
         Schema::table('bookings', function (Blueprint $table) {
-            // Hanya tambahkan foreign key saja jika kolom sudah ada
+            // Tambahkan kolom jika belum ada
+            if (!Schema::hasColumn('bookings', 'vehicle_id')) {
+                $table->unsignedBigInteger('vehicle_id')->nullable();
+            }
+
+            // Tambahkan foreign key
             $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');
         });
     }
@@ -20,10 +25,14 @@ return new class extends Migration
     public function down()
     {
         Schema::table('bookings', function (Blueprint $table) {
+            // Drop foreign key
             $table->dropForeign(['vehicle_id']);
-            // Jangan drop kolom karena tidak ditambahkan di up()
+            
+            // Drop kolom jika ditambahkan di up()
+            if (Schema::hasColumn('bookings', 'vehicle_id')) {
+                $table->dropColumn('vehicle_id');
+            }
         });
     }
-    
-    
 };
+
