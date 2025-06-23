@@ -35,4 +35,4 @@ RUN chmod -R 775 storage bootstrap/cache
 EXPOSE 8000
 
 # Jalankan server Laravel bawaan
-CMD ["vendor/bin/heroku-php-apache2", "public/"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=${PORT}"]
